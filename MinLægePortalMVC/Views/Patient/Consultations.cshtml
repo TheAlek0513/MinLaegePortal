@@ -1,0 +1,47 @@
+﻿@using MinLægePortalModels.Models;
+@using MinLægePortalMVC.Models;
+@model dynamic
+@{
+    List<ConsultationString> consultationStrings = Model.ConsultationStrings;
+    Consultation consultation = Model.Consultation;
+    ViewBag.Title = "Konsultationer";
+}
+
+<div class="rowTop">
+    <ul class="navigation">
+        <li>
+            <button class="navButton" type="submit" onclick="window.history.go(-1); return false;">Tilbage</button>
+        </li>
+        <li id="LogOutBtn">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <button class="navButton" type="submit">Log ud</button>
+            }
+        </li>
+    </ul>
+</div>
+
+<div class="row" id="consulCon">
+    <h2>Mine konsultationer</h2>
+    <p class="helpText">Dette er en oversigt over dine kommende konsultationer. <br/>Klik på en specifik konsultation for at få flere informationer og adgang til opkaldet.</p>
+    <div class="consulOverview">
+        <ul class="consultations">
+            @foreach (ConsultationString conString in consultationStrings)
+            {
+                <li class="consulBtns">
+                    @using (Html.BeginForm("ShowSelectedConsultation", "Patient", FormMethod.Get))
+                    {
+                        if (conString.Consultation != null)
+                        {
+                            @Html.HiddenFor(Consultation => consultation.ConsultationId, new { Value = conString.Consultation.ConsultationId })
+                            @Html.HiddenFor(model => conString.Consultation.ConsultationId)
+                            <button class="consulBtn" type="submit"><strong>@conString.DateString</strong> <br /> @conString.EmployeeString <br />@conString.Description</button>
+                        }
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+

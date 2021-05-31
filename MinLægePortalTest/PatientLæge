@@ -1,0 +1,22 @@
+using NUnit.Framework;
+
+namespace minLægePortalTest
+{
+    public class Tests
+    {
+        [SetUp]
+        public void Setup()
+        {
+    <Compile Remove="UnitTest1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+        }
+
+        [Test] 
+        public void Test1()
+        {
+            Assert.Pass();
+        }
+    }
+}

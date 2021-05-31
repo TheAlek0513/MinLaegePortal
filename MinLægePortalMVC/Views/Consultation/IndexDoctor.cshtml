@@ -1,0 +1,58 @@
+﻿@using MinLægePortalModels.Models
+@model DataTransferObjects
+@{
+    Consultation consultation = Model.Consultation;
+    Patient patient = Model.Patient;
+    Doctor doctor = Model.Doctor;
+    ViewBag.Title = "Startside";
+}
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+<div class="rowTop">
+    <ul class="navigation">
+        <li>
+            @using (Html.BeginForm("ChatRoomDoctor", "Consultation", FormMethod.Post, new { target = "_blank" }))
+            {
+                @Html.HiddenFor(m => m.Consultation.ConsultationId)
+                @Html.HiddenFor(m => m.Consultation.RoomId)
+
+                <button class="navButton" type="submit">Gå til opkald</button>
+            }
+        </li>
+        <li id="LogOutBtn">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <button class="navButton" id="LogOutBtn" type="submit">Log ud</button>
+            }
+        </li>
+    </ul>
+    <ul class="navigation">
+        <li>
+            <button class="navButton" type="submit" onclick="window.history.go(-1); return false;">Tilbage til oversigt</button>
+        </li>
+    </ul>
+</div>
+<div class="container">
+    <div class="conHeader">
+        <h2>@Model.Consultation.DateTime.ToString()</h2>
+        <p class="helpText">Informationer omkring konsultationen. <br />Klik på "Gå til opkald", når du er klar til din konsultation.</p>
+    </div>
+    <div class="conBody">
+        <table class="InfoTable" style="width:100%">
+            <tr>
+                <td>Patient:</td>
+                <td>@Model.Patient.FirstName,@Model.Patient.LastName, @Model.Patient.CPR</td>
+            </tr>
+            <tr>
+                <td>Behandler:</td>
+                <td>@Model.Doctor.FirstName @Model.Doctor.LastName, @Model.Doctor.EmployeeId</td>
+            </tr>
+            <tr>
+                <td>Beskrivelse:</td>
+                <td>@Model.Consultation.Description</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+

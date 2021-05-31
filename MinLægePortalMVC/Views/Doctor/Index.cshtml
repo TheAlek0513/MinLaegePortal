@@ -1,0 +1,134 @@
+﻿@using MinLægePortalModels.Models;
+@model DataTransferObjects
+@{
+    Practice practice = Model.Practice;
+    Doctor doctor = Model.Doctor;
+    Patient patient = Model.Patient;
+    IEnumerable<Doctor> doctors = Model.Doctors; 
+    Consultation consultation = Model.Consultation;
+    IEnumerable<Consultation> consultations = Model.Consultations;
+    IEnumerable<TimeInterval> TimeIntervals = Model.TimeIntervals;
+    ViewBag.Title = "Startside";
+    ViewBag.Doctors = Model.Doctors;
+}
+
+
+<div class="ourHeader">
+    <h1>Velkommen til Min Lægeportal</h1>
+    <h2>@practice.Name, @practice.Address, @practice.ZipCode</h2>
+</div>
+
+<div class="rowTop">
+    <ul class="navigation">
+        <li>
+            @using (Html.BeginForm("RegisterPatient", "Account", FormMethod.Get))
+            {
+                <button class="navButton" type="submit">Registrer ny patient</button>
+            }
+        </li>
+        <li>
+            @using (Html.BeginForm("RegisterDoctor", "Account", FormMethod.Get))
+            {
+                <button class="navButton" type="submit">Registrer ny læge</button>
+            }
+        </li>
+        <li id="LogOutBtn">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <button class="navButton" id="LogOutBtn" type="submit">Log ud</button>
+            }
+        </li>
+    </ul>
+    <ul class="navigation">
+        <li class="containerForAuto">
+            @using (Html.BeginForm("AutoGenerateTimes", "Doctor", FormMethod.Post))
+            {
+                <label class="rowTopLabel">Indtast medarbejderid: </label>
+                @Html.DropDownList("EmployeeId", new SelectList(Model.Doctors.Distinct().ToList(), "EmployeeId", "FirstName"))
+                <button class="navButton" id="autoBtn" type="submit">Auto generer</button>
+            }
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Informationer</h2>
+        <table class="InfoTable" style="width:100%">
+            <tr>
+                <td>Navn:</td>
+                <td>@doctor.FirstName @doctor.LastName</td>
+            </tr>
+            <tr>
+                <td>MedarbejderID:</td>
+                <td>@doctor.EmployeeId</td>
+            </tr>
+            <tr>
+                <td>Tlf.:</td>
+                <td>@doctor.PhoneNumber</td>
+            </tr>
+            <tr>
+                <td>Adresse:</td>
+                <td>@doctor.Address,<br /> @doctor.ZipCode</td>
+            </tr>
+        </table>
+        <button type="button">Redigér oplysninger</button>
+    </div>
+    <div class="col-md-4">
+        <h2>Book konsultation</h2>
+        
+        <table style="width:100%" id="tableConsultation">
+            <tr>
+                <td><label for="doctors">Vælg læge: </label></td>
+                <td>
+                    @using (Html.BeginForm("GetTimeIntervalsByEmployeeId", "Doctor", FormMethod.Get))
+                    {
+                        @Html.DropDownList("EmployeeId", new SelectList(Model.Doctors.Distinct().ToList(), "EmployeeId", "FirstName"))
+                        <input type="submit" value="Vælg Læge" />
+                    }
+                </td>
+            </tr>
+            @using (Html.BeginForm("CreateConsultation", "Doctor", FormMethod.Post))
+            {
+                <tr>
+                    <td><label for="patientCPR">Indtast CPR: </label></td>
+                    <td>
+                        @Html.TextBoxFor(model => patient.CPR)
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="description">Beskrivelse: </label></td>
+                    <td>
+                        @Html.TextBoxFor(model => consultation.Description)
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="dates">Vælg dato: </label></td>
+                    <td>
+                        @Html.DropDownList("DateTime", new SelectList(Model.TimeIntervals.Distinct().ToList(), "DateTime", "DateTime"))
+                        @Html.Hidden("EmployeeId", new SelectList(Model.TimeIntervals.Distinct().ToList(), "EmployeeId", "EmployeeId"))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit">Book tid</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2>Konsultationer</h2>
+        <ul class="consultations">
+            <li>
+                @using (Html.BeginForm("Consultations", "Doctor", FormMethod.Get))
+                {
+                    <button class="consultation" type="submit">Se flere...</button>
+                }
+            </li>
+            
+        </ul>
+    </div>
+    
+</div>

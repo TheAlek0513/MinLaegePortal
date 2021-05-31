@@ -1,0 +1,26 @@
+﻿@using MinLægePortalModels.Models;
+@{
+    ViewBag.Title = "Startside";
+}
+
+    <div class="jumbotron">
+        <h1>Velkommen til Min Lægeportal</h1>
+    </div>
+        
+    <div class="row" id="rowLogin">
+        @using (Html.BeginForm("LoginCheck", "Login", FormMethod.Post))
+        {
+        <div class="col-md-4" id="loginContainer">
+            <h2 id="loginH2">Logget ud</h2>
+            <p>Du er blevet logget ud.</p>
+            <p>Ønsker du at logge ind igen?</p>
+            <button class="loginBtn" type="submit">Log ind her...</button>
+        </div>
+        }
+        @*@using (Html.BeginForm("RegisterDoctor", "Account", FormMethod.Post))
+        {
+            <button class="registerDoctor" type="submit">Registrer ny læge</button>
+        }*@
+       
+    </div>
+        

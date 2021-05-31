@@ -1,0 +1,45 @@
+﻿@using MinLægePortalMVC.Models
+@model MinLægePortalMVC.Models.LoginViewModel
+@{
+    ViewBag.Title = "Log ind";
+}
+<div id="containerForLogin">
+    <div class="ourHeader" id="loginHeader">
+        <h1>Velkommen til Min Lægeportal</h1>
+        <p class="helpText">Min Lægeportal giver dig muligheden for online konsultationer med din egen læge</p>
+    </div>
+    <div class="ourContainer" id="loginContainer">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4 class="subHeader" id="loginHeader">Log ind her</h4>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserId, "Brugernavn: ", new { @class = "login-label" })
+                    <div class="inputField">
+                        @Html.TextBoxFor(m => m.UserId, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, "Adgangskode: ", new { @class = "login-label" })
+                    <div class="inputField">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <button type="submit" id="loginBtn">Log ind</button>
+            }
+        </section>
+        @using (Html.BeginForm("RegisterDoctor", "Account", FormMethod.Get))
+        {
+            <button class="navButton" type="submit">Registrer ny læge</button>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

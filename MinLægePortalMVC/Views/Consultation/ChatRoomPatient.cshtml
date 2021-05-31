@@ -1,0 +1,99 @@
+﻿@using MinLægePortalModels.Models;
+@model Consultation
+@{
+    ViewBag.Title = "ChatRoom";
+}
+<html>
+<head>
+    @* må ikke være async eller defer *@
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="rowTop">
+        <div class="entry-model" id="entry-model">
+            @Html.HiddenFor(m => m.RoomId)
+            <ul class="navigation">
+                <li>
+                    <button class="navButton" onclick="SætIventeRum()">Gå i venterum</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" id="rowChatPatient">
+        <p class="helpText">Du er på vej ind i opkaldet. <br/>Hvis du ønsker at fortsætte, så klik på "Gå i venterum".</p>
+        <div class="meet-area" id="meeting">
+            <!-- Remote Video Element-->
+            <video id="gum-remote-patient"></video>
+
+            <!-- Local Video Element-->
+            <video id="gum-local-patient"></video>
+        </div>
+    </div>
+
+    <script>
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        var local_stream;
+        var room_id;
+
+
+        function setLocalStream(stream) {
+            var video = document.getElementById("gum-local-patient");
+            video.srcObject = stream;
+            video.muted = true;
+            video.play();
+        }
+
+        function setRemoteStream(stream) {
+            var video = document.getElementById("gum-remote-patient");
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function hideModel() {
+            document.getElementById("entry-model").hidden = true
+        }
+
+        function notify(msg) {
+            let notification = document.getElementById("notification")
+            notification.innerHTML = msg
+            notification.hidden = false
+            setTimeout(() => {
+                notification.hidden = true;
+            }, 3000)
+        }
+
+        function SætIventeRum() {
+            console.log("SætIventeRum().go")
+            var roomId = document.getElementById("RoomId").value;
+            console.log(roomId)
+            if (roomId == " " || roomId == "") {
+                alert("Der skete en fejl. Prøv igen senere")
+                return;
+            }
+            room_id = roomId;
+            var peer = new Peer("Portal" + room_id)
+
+            peer.on('open', function (id) {
+                console.log("dit PeerId er: " + id)
+                hideModel()
+                getUserMedia({ video: true, audio: false }, (stream) => {
+                    local_stream = stream;
+                    setLocalStream(local_stream)
+                }, (err) => {
+                    console.log(err)
+                })
+                notify("Waiting for peer to join.")
+            })
+            peer.on('call', (call) => {
+                call.answer(local_stream);
+                call.on('stream', (stream) => {
+                    setRemoteStream(stream)
+                })
+            })
+        }
+        
+    </script>
+</body>
+</html>
+

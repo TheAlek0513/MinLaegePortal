@@ -1,0 +1,64 @@
+﻿@using MinLægePortalModels.Models;
+@{
+    Practice practice = ViewBag.Practice();
+    ViewBag.Title = "About";
+}
+<h2>Om lægehuset</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Åbningstider</h3>
+        @*Opdater så den automatisk opdaterer oplysninger*@
+        <table>
+            <tr>
+                <td>Mandag:</td>
+                <td>@practice.OpenTime.ToString() - @practice.CloseTime.ToString()</td>
+            </tr>
+            <tr>
+                <td>Tirsdag:</td>
+                <td>@practice.OpenTime.ToString() - @practice.CloseTime.ToString()</td>
+            </tr>
+            <tr>
+                <td>Onsdag:</td>
+                <td>@practice.OpenTime.ToString() - @practice.CloseTime.ToString()</td>
+            </tr>
+            <tr>
+                <td>Torsdag:</td>
+                <td>@practice.OpenTime.ToString() - @practice.CloseTime.ToString()</td>
+            </tr>
+            <tr>
+                <td>Fredag:</td>
+                <td>@practice.OpenTime.ToString() - @practice.CloseTime.ToString()</td>
+            </tr>
+            <tr>
+                <td>Lørdag:</td>
+                <td>Lukket</td>
+            </tr>
+            <tr>
+                <td>Søndag:</td>
+                <td>Lukket</td>
+            </tr>
+        </table>
+        <p>Lørdag og søndag henvises der til vagtlægen</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Lægeklinik</h3>
+        @*Opdater så den automatisk opdaterer oplysninger*@
+        <article>
+            <p>Velkommen til @practice.Name i @practice.ZipCode</p>
+            <p>Lægehuset er placeret i Aalborg centrum og derved nem at komme til med eventuelt offentlig transport. </p>
+            <p>I klinikken er både læger og sygeplejersker med flere års erfaring, samt lgæer og sygeplejersker under uddannelse. </p>
+            <p>Når du ringer ind til klinikken bliver du mødt af Hanne og Lise, som sidder i receptionen og tager imod patienterne i klinikken og opkald herind til.</p>
+        </article>
+    </div>
+    <div class="col-md-4">
+        <h2>Kontakt dit lægehus</h2>
+        @*Opdater adressen så den automatisk henter lægehusets oplysninger*@
+        <address>
+            @practice.Name<br />
+            @practice.Address, @practice.ZipCode<br />
+            <abbr title="Phone">Tlf.:</abbr>
+            @practice.Phone
+        </address>
+    </div>
+</div>

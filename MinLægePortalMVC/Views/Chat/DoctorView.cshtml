@@ -1,0 +1,59 @@
+﻿@using MinLægePortalModels.Models;
+@model Consultation
+@{
+    ViewBag.Title = "Startside";
+}
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+    <base target="_blank">
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+    @* må ikke være async eller defer *@
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="container">
+
+        <video id="gum-local" autoplay playsinline></video>
+        <button id="showVideo">Open camera</button>
+        <canvas></canvas>
+        @Html.HiddenFor(m => m.RoomId)
+        <div id="errorMsg"></div>
+
+    </div>
+
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script>
+
+        var peer = new Peer();
+        const video = document.querySelector('video');
+        const canvas = window.canvas = document.querySelector('canvas');
+        canvas.width = 480;
+        canvas.height = 360;
+
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        getUserMedia({ video: true, audio: true }, function (stream) {
+            var call = peer.call((document.getElementById("RoomId").value), stream);
+            call.on('stream', function (remoteStream) {
+                window.stream = stream;
+                video.srcObject = stream;
+
+            });
+        }, function (err) {
+            console.log('Failed to get local stream', err);
+        });
+        document.getElementById('showVideo').addEventListener('click', e => init(e));
+
+    </script>
+
+    <script src="../../../js/lib/ga.js"></script>
+
+</body>
+</html>

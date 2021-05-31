@@ -1,0 +1,110 @@
+﻿@using MinLægePortalModels.Models;
+@model DataTransferObjects
+@{
+    Practice practice = Model.Practice;
+    Patient patient = Model.Patient;
+    IEnumerable<Doctor> doctors = Model.Doctors;
+    Consultation consultation = Model.Consultation;
+    IEnumerable<Consultation> consultations = Model.Consultations;
+    IEnumerable<TimeInterval> TimeIntervals = Model.TimeIntervals;
+    ViewBag.Title = "Startside";
+    ViewBag.Doctors = Model.Doctors;
+}
+
+
+<div class="ourHeader">
+    <h1>Velkommen til Min Lægeportal</h1>
+    <h2>@practice.Name, @practice.Address, @practice.ZipCode</h2>
+</div>
+
+<div class="rowTop">
+    <ul class="navigation">
+        <li id="LogOutBtn">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <button class="navButton" id="LogOutBtn" type="submit">Log ud</button>
+            }
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Informationer</h2>
+        <table class="InfoTable" style="width:100%">
+            <tr>
+                <td>Navn:</td>
+                <td>@patient.FirstName @patient.LastName</td>
+            </tr>
+            <tr>
+                <td>CPR-nummer:</td>
+                <td>@patient.CPR</td>
+            </tr>
+            <tr>
+                <td>Tlf.:</td>
+                <td>@patient.PhoneNumber</td>
+            </tr>
+            <tr>
+                <td>Adresse:</td>
+                <td>@patient.Address,<br /> @patient.ZipCode</td>
+            </tr>
+        </table>
+        <button class="submitBtn" type="button">Redigér oplysninger</button>
+    </div>
+    <div class="col-md-4">
+        <h2>Book konsultation</h2>
+        
+        <table style="width:100%">
+            <tr>
+                <td><label for="doctors">Vælg læge: </label></td>
+                <td>
+                    @using (Html.BeginForm("GetTimeIntervalsByEmployeeId", "Patient", FormMethod.Get))
+                    {
+                        @Html.DropDownList("EmployeeId", new SelectList(Model.Doctors.Distinct().ToList(), "EmployeeId", "FirstName"))
+                        <input type="submit" class="submit" value="Vælg Læge" />
+                    }
+                </td>
+            </tr>
+            @using (Html.BeginForm("CreateConsultation", "Patient", FormMethod.Post))
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(model => patient.PatientId)
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="description">Beskrivelse: </label></td>
+                    <td>
+                        @Html.TextBoxFor(model => consultation.Description)
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="dates">Vælg dato: </label></td>
+                    <td>
+                        @Html.DropDownList("DateTime", new SelectList(Model.TimeIntervals.Distinct().ToList(), "DateTime", "DateTime"))
+                        @Html.Hidden("EmployeeId", new SelectList(Model.TimeIntervals.Distinct().ToList(), "EmployeeId", "EmployeeId"))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="submitBtn" type="submit">Book tid</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2>Konsultationer</h2>
+        <ul class="consultations">
+            <li>
+                @using (Html.BeginForm("Consultations", "Patient", FormMethod.Get))
+                {
+                    <button class="consultation" type="submit">Se flere...</button>
+                }
+            </li>
+            
+        </ul>
+    </div>
+    
+</div>

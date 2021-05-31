@@ -1,0 +1,459 @@
+﻿* {
+    font-family: Open Sans,Arial;
+}
+
+.row {
+    margin-right: -50px;
+    margin-left: -50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+    border: 2px solid lightgrey;
+    position: center;
+    min-height: 400px;
+}
+
+@media (min-height: 768px) {
+    .row {
+        min-height: 300px;
+        max-height: 500px;
+    }
+}
+
+@media (min-height: 800px) {
+    .row {
+        min-height: 400px;
+        max-height: 500px;
+    }
+}
+
+#rowRegisterPatient, #rowRegisterDoctor {
+    width: 650px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 550px;
+    padding: 0;
+    border-radius: 0px 0px 0px 0px;
+    border: 0px;
+    border-top: 2px solid rgba(0, 84, 187, 0.93);
+}
+
+#registerPatientContainer, #registerDoctorContainer {
+    width: inherit;
+}
+
+.row-no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.row-no-gutters [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+article {
+}
+
+.select {
+    margin-bottom: 10px;
+}
+
+label.col-md-4 {
+    width: 200px;
+}
+
+select, input {
+    width: 10em;
+}
+
+button {
+    display: block;
+    color: #000;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 84, 187, 0.93);
+    padding: 8px 16px;
+    margin: 10px 10px;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: white;
+}
+
+    button:hover {
+        background-color: rgba(0, 84, 187, 0.93);
+        color: white;
+    }
+
+#loginBtn {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    font-size: 15px;
+}
+
+a.consultation {
+    display: block;
+    color: #000;
+    border: 1px solid rgba(0, 84, 187, 0.93);
+    padding: 8px 16px;
+    margin: 10px 0px;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: lightgrey;
+}
+
+ /*Change the link color on hover*/
+a:hover.consultation {
+    background-color: rgba(0, 84, 187, 0.93);
+    color: white;
+}
+
+ul.consultations {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.col-md-8-register {
+    float: none;
+    position: center;
+}
+
+#rowLogin {
+    width: 500px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto;
+    margin-right: auto;
+    margin-left: auto;
+    height: 300px;
+    padding: 0;
+    border-radius: 0px 0px 0px 0px;
+    border: 2px solid rgba(0, 84, 187, 0.93);
+}
+
+.outHeader {
+    text-align: center;
+}
+
+.outHeader .h1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: rgba(0, 84, 187, 0.93);
+}
+
+.outHeader .h2 {
+    font-size: 20px;
+    color: rgba(0, 84, 187, 0.93);
+}
+
+#loginH2 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(0, 84, 187, 0.93);
+}
+
+.loginBtn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#doctors, #date, #times {
+    width: 200px;
+}
+
+.rowTop {
+    margin-right: -50px;
+    margin-left: -50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    background-color: rgba(0, 84, 187, 0.93);
+    border-radius: 10px 10px 0px 0px;
+    border: 1px solid rgba(0, 84, 187, 0.93);
+    border-bottom: 0px;
+    height: 75px;
+    position: center;
+    justify-content: space-evenly;
+}
+
+.navigation {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+    .navigation > li {
+        float:left;
+    }
+
+
+#consulsNavigation {
+    display: inline-block;
+}
+
+.navButton {
+    display: block;
+    font-size: 15px;
+    color: white;
+    text-align: center;
+    border-color: transparent;
+    text-decoration: none;
+    background-color: transparent;
+    padding: 3px;
+    font-weight:bold;
+}
+
+.navButton:hover {
+    color: rgba(0, 84, 187, 0.93);
+    background-color: white;
+}
+
+#LogOutBtn {
+    float: right;
+    margin-right: 20px;
+}
+
+.ourNavCon {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    align-content: center;
+}
+
+.ourContainer {
+    width: 600px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 3px;
+}
+
+.ourHeader {
+    align-items:center;
+    position:center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#loginHeader {
+    text-align: center;
+}
+
+#containerForLogin {
+    margin-top: 10rem;
+}
+
+.helpText {
+    font-size: 13px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ourHeader > h1 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: rgba(0, 84, 187, 0.93);
+}
+
+.ourHeader > h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.conHeader .h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.conBody .InfoTable {
+    font-size: 15px;
+}
+
+.conHeader {
+    height: auto;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.conBody {
+    align-content: center;
+}
+
+#registerPatientCon, #registerDoctorCon {
+    width: 640px;
+    margin: auto;
+    display: grid;
+    justify-content: center;
+}
+
+#loginContainer {
+    width: 325px;
+    margin-top: 5rem;
+}
+
+#loginForm {
+    width: inherit;
+}
+
+.login-label {
+    width: auto;
+    margin: 0px;
+    padding-right: 1px;
+    text-align: left;
+    font-size: 15px;
+    vertical-align:central;
+}
+
+.subHeader {
+    text-align:center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inputField {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: right;
+}
+
+.rowTopLabel {
+    color: white;
+    font-family: Open Sans,Arial;
+    font-size: 15px;
+}
+
+#employeeId {
+    font-size: 15px;
+    width: 100px;
+}
+
+#containerForAuto {
+    padding-left: 5px;
+
+}
+
+form {
+    display:inline-block;
+}
+
+#autoBtn {
+    display:inline-block;
+}
+
+.consulOverview {
+    height: 300px;
+    width: 100%;
+    overflow-y: scroll;
+    float: left;
+    justify-content: space-around;
+    margin-bottom: 3em;
+}
+
+.consulOverview > ul {
+    justify-content: space-around;
+}
+.consulOverview > ul > li {
+    margin: 5px;
+    width: 400px;
+}
+#consulBtns {
+    width: 200px;
+    padding: 5px;
+    font-size: 15px;
+}
+
+.consulBtn {
+    display: block;
+    color: #000;
+    border-radius: 2px;
+    border: 1px solid rgba(0, 84, 187, 0.93);
+    padding: 8px 16px;
+    margin: 10px 0px;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: white;
+    width: 250px;
+    height: 75px;
+}
+
+.consulBtn:hover {
+    background-color: rgba(0, 84, 187, 0.93);
+    color: white;
+}
+
+video {
+    border: 2px solid rgba(0, 84, 187, 0.93);
+}
+
+#gum-remote {
+    width: 500px;
+}
+
+#tableConsultation tr td:nth-child(1) {
+    width: 100px;
+}
+
+#tableConsultation > select, #tableConsultation > input {
+    width: 200px;
+}
+
+#failDiv {
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+    height: 500px;
+    border: solid 2px rgba(0, 84, 187, 0.93);
+    border-radius: 10px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+#rowChatPatient #rowChatDoctor {
+    height: 100%;
+    justify-content: space-evenly;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#meeting {
+    display:flex;
+    justify-content:space-evenly;
+}
+
+#gum-local-patient, #gum-local-doctor {
+    max-width: 300px;
+    max-height: 225px;
+}
+
+#gum-remote-patient, #gum-remote-doctor {
+    max-width: 600px;
+    max-height: 450px;
+}
+
+.meet-area {
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+}

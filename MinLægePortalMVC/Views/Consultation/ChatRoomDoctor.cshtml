@@ -1,0 +1,83 @@
+﻿@using MinLægePortalModels.Models;
+@model Consultation
+@{
+    ViewBag.Title = "ChatRoomDoctor";
+}
+<html>
+<head>
+    @* må ikke være async eller defer *@
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="rowTop">
+        <div class="entry-modal" id="entry-modal">
+            @Html.HiddenFor(m => m.RoomId)
+            <ul class="navigation">
+                <li>
+                    <button onclick="DeltagIOpkald()">Deltag i opkald</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" id="rowChatPatient">
+        <p class="helpText">Du er på vej ind i opkaldet. <br />Hvis du ønsker at fortsætte, så klik på "Deltag i opkald".</p>
+        <div class="meet-area" id="meeting">
+            <!-- Remote Video Element-->
+            <video id="gum-remote-doctor"></video>
+
+            <!-- Local Video Element-->
+            <video id="gum-local-doctor"></video>
+        </div>
+        @Html.HiddenFor(m => m.RoomId)
+    </div>
+
+    <script>
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        var local_stream;
+        var room_id;
+
+        function setLocalStream(stream) {
+            var video = document.getElementById("gum-local-doctor");
+            video.srcObject = stream;
+            video.muted = true;
+            video.play();
+        }
+
+        function setRemoteStream(stream) {
+            var video = document.getElementById("gum-remote-doctor");
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function DeltagIOpkald() {
+            console.log("DeltagIOpkald")
+            console.log("dette er roomIdet " + document.getElementById("RoomId").value)
+            var roomId = document.getElementById("RoomId").value;
+            if (roomId == " " || roomId == "") {
+                alert("de ser ikke ud til at en patient har sat sig i opkaldet endnu")
+                return;
+            }
+            room_id = "Portal" + roomId;
+
+            var peer = new Peer()
+
+            peer.on('open', (id) => {
+                console.log("dette er det Room_id du har joined: " + room_id)
+                console.log("dette er dit Peerid: " + id)
+                getUserMedia({ video: true, audio: false }, (stream) => {
+                    local_stream = stream;
+                    setLocalStream(local_stream)
+                    var call = peer.call(room_id, stream)
+                    call.on('stream', (stream) => {
+                        setRemoteStream(stream)
+                    })
+                }, (err) => {
+                    console.log(err)
+                })
+            })
+        }
+    </script>
+</body>
+</html>
+

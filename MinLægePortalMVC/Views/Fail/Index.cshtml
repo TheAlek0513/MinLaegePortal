@@ -1,0 +1,14 @@
+﻿@using MinLægePortalModels.Models;
+@model DataTransferObjects 
+@{
+    string failMessage = Model.FailMessage;
+    ViewBag.Title = "Fejlmeddelelse";
+}
+
+<div id="failDiv">
+    <h2>@failMessage.</h2>
+    <button type="submit" onclick="window.history.go(-1); return false;">Tilbage</button>
+</div>
+
+
+
