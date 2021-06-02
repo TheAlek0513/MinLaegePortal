@@ -52,7 +52,7 @@ namespace MinLægePortalAPI.Database
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
                 string sqlString = "SELECT * FROM Doctor WHERE employeeId = @employeeId";
-                Doctor result = con.Query<Doctor>(sqlString, new { employeeId = id }).FirstOrDefault();
+                Doctor result = con.Query<Doctor>(sqlString, new { employeeId }).FirstOrDefault();
                 return result;
             }
         }
