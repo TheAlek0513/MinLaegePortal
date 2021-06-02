@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(MinLægePortalAPI.Startup))]
+[assembly: OwinStartupAttribute("MinLægePortalAPI.config", typeof(MinLægePortalAPI.Startup))]
 
 namespace MinLægePortalAPI
 {

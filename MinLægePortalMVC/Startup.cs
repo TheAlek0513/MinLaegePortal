@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(MinLægePortalMVC.Startup))]
+[assembly: OwinStartupAttribute("MinLægePortalMVC.config", typeof(MinLægePortalMVC.Startup))]
 namespace MinLægePortalMVC
 {
     public partial class Startup
