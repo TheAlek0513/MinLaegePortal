@@ -5,15 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Transactions;
 using System.Web.Http;
-using System.Web.Http.Description;
-using MinLægePortalModels.Models;
-using MinLægePortalAPI.Database;
-using System.Data.SqlClient;
 
 namespace MinLægePortalAPI.Controllers
 {
@@ -27,11 +22,45 @@ namespace MinLægePortalAPI.Controllers
         public IHttpActionResult Post([FromBody] Consultation consultation)
         {
             IHttpActionResult result;
+            //Don't know why, but Json takes 2 hours from the DateTime
+            consultation.DateTime = consultation.DateTime.AddHours(2);
             try
             {
+                    if (consultation.DateTime > DateTime.Now)
+                    {
+                    if (consultation.Description.Trim().Length > 0 && consultation.PatientId > 0 && consultation.EmployeeId.Trim().Length > 0)
+                    {
+                        TransactionOptions options = new TransactionOptions
+                        {
+                            IsolationLevel = IsolationLevel.Serializable,
+                            Timeout = TimeSpan.FromSeconds(60) //<-- Timeout to prevent gridlocks, or any other type of blockage.
+                        };
+                        using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, options))
+                        {
+                            Consultation addedConsultation = _consultationDB.InsertConsultationIntoDatabase(consultation);
+                            int id = addedConsultation.ConsultationId;
+                            string employeeId = addedConsultation.EmployeeId;
+                            DateTime dateTime = addedConsultation.DateTime;
+                            _timeIntervalCtrl.UpdateTimeInterval(id, employeeId, dateTime);
+                            scope.Complete();
+
+                            result = Ok(addedConsultation);
+                        }
+                    }
+                    else
+                    {
+                        result = Content(HttpStatusCode.Conflict, "The Arguments provided were invalid.");
+                    }
+                    }
+                    else
+                    {
+                        result = Content(HttpStatusCode.Conflict, "The selected date isn't in the future??. Wait A Minute, Doc. Are You Telling Me You Built A Time Machine...Out Of A DeLorean?");
+                    }
+
             }
             catch (SqlException)
             {
+                result = Content(HttpStatusCode.InternalServerError, $"Data could not be inserted.");
             }
             catch (AlreadyExistsException)
             {
@@ -85,6 +114,7 @@ namespace MinLægePortalAPI.Controllers
             }
             catch (ArgumentException)
             {
+                result = Content(HttpStatusCode.NotFound, $"The consultation with patientId #{patientId} was not found!");
             }
 
             return result;

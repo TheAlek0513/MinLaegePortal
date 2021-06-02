@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using MinLægePortalModels.Models;
 using MinLægePortalMVC.Models;
 using Newtonsoft.Json;
@@ -40,14 +42,29 @@ namespace MinLægePortalMVC.Controllers
 
         public ActionResult ChatRoomPatient(Consultation consultation)
          {
+            var Userid = User.Identity.GetUserName();
             Consultation consultationUpdate = GetConsultationById(consultation.ConsultationId);
-            consultationUpdate.RoomId = consultation.RoomId;
-            UpdateConsultaion(consultationUpdate);
-            return View(consultationUpdate);
+            Patient patient = GetPatient(Userid);
+            if (patient.PatientId == consultationUpdate.PatientId)
+            {
+                consultationUpdate.RoomId = consultation.RoomId;
+                UpdateConsultaion(consultationUpdate);
+                return View(consultationUpdate);
+            }
+            String failMessage = "du er ikke den patient som er sat på konsultaione";
+            return RedirectToAction("Fail", "Index", failMessage );
         }
         public ActionResult ChatRoomDoctor(Consultation consultation)
         {
-            return View(consultation);
+            var Userid = User.Identity.GetUserName();
+            Consultation consultationUpdate = GetConsultationById(consultation.ConsultationId);
+            Doctor doctor = GetDoctor(Userid);
+            if (doctor.EmployeeId == consultationUpdate.EmployeeId)
+            {
+                return View(consultationUpdate);
+            }
+            String failMessage = "du er ikke den patient som er sat på konsultaione";
+            return RedirectToAction("Fail", "Index", failMessage);
         }
 
         //Get consultation by consultationId
@@ -73,6 +90,22 @@ namespace MinLægePortalMVC.Controllers
 
             RestRequest request = new RestRequest("api/Patient", Method.GET);
             request.AddParameter("patientId", patientId);
+            RestResponse response = (RestResponse)RestClientManager.RestClientManager.Client.Execute(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                patient = JsonConvert.DeserializeObject<Patient>(response.Content);
+            }
+            return patient;
+        }
+
+        //Get Patient By patient CPR
+        public Patient GetPatient(string cpr)
+        {
+            Patient patient = null;
+
+            RestRequest request = new RestRequest("api/Patient", Method.GET);
+            request.AddParameter("cpr", cpr);
             RestResponse response = (RestResponse)RestClientManager.RestClientManager.Client.Execute(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
